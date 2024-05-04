@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="">
+    <link rel="shortcut icon" href="#"/>
+    <link rel="icon" href="data: ;base64,iVBORw0KGgo=">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <meta charset="UTF-8">
+    <title>Image Display and Touch Coordinates</title>
+</head>
+<body>
+    <h2>서버 이미지 표시 및 터치 좌표 전송</h2>
+    <img id="uploadedImage" src="/팀원지도최종본.png" alt="Uploaded Image" style="max-width: 500px;">
+    <script>
+        document.getElementById('uploadedImage').addEventListener('click', function(event) {
+            var rect = event.target.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+            console.log("터치 좌표: ", x, y);
+
+            fetch('/coordinates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({x: x, y: y}),
+            }).then(response => response.json())
+              .then(data => console.log(data));
+        });
+    </script>
+</body>
+</html>
